@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+mkdir -p static/build
+rm -rf static/build/*
+
+sass src/app.scss --style=compressed --no-source-map --quiet > static/build/app.css
+esbuild --bundle src/init.js --outfile=static/build/init.js --minify
+elm make src/Main.elm --optimize --output /tmp/elm.js
+esbuild /tmp/elm.js --outfile=static/build/elm.js --minify
+rm /tmp/elm.js
